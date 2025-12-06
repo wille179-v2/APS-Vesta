@@ -1,0 +1,15 @@
+This mod is designed to make Vesta a possible starting planet with Any Planet Start, using Crude Alien Tech and the Sterling Generator mod as a jumping-off point to bootstrap production.
+
+Goals:
+	- Give the player the minimum possible starting resources required to bootstrap themselves into basic ore production on Vesta
+	- Rearrange technologies and alter Vesta tech tree / recipes as little as possible.
+	- Add new reward tech to encourage exploring deep on Vesta.
+	- Add the ability to go Nuclear-Equivalent on Vesta (maybe thorium)?
+	- Make Aquilo accessible at any time, not post gleba/fulgora/vulcanus.
+	- Incorporate Age of Production as a manditory dependency
+		- Optional Dependencies: Big Solar Panel (https://mods.factorio.com/mod/snouz-big-solar-panel) or Concentrated Solar (https://mods.factorio.com/mod/ch-concentrated-solar) as another Nauvis reward
+		- SE Space Trains (https://mods.factorio.com/mod/se-space-trains), reconfigured to burn nuclear or fusion fuel cells as fuel and go even faster (check compatibility with Moshine).
+	
+Optional Goals:
+	- Create a "Nauvisian" science pack that mixes uranium with biter eggs. Nuclear technology + AoP's atomic Enricher as planet reward?)
+		- Alternatively, use atan-nuclear science (https://mods.factorio.com/mod/atan-nuclear-science) and merge the Atom Forge building with Age of Production's Atomic Enricher

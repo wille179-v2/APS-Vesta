@@ -1,0 +1,15 @@
+{
+  "name": "aps-vesta",
+  "version": "0.1.0",
+  "title": "Planet Vesta Start",
+  "author": "Wille179",
+  "factorio_version": "2.0",
+  "dependencies": [
+    "base >= 2.0",
+    "space-age >= 2.0",
+    "crude-alien-tech >= 0.3.6",
+    "any-planet-start >= 1.1.24",
+    "skewer_planet_vesta >= 2.1.4"
+  ],
+  "description": "A patch to enable Any Planet Start on  CPU_BlackHeart's Planet Vesta."
+}
