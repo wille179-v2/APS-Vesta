@@ -13,9 +13,13 @@ script.on_init(function()
     remote.call("freeplay", "set_created_items", {
         ["cat-biochamber-mk1"] = 5,
 	    ["cat-cryogenic-plant-mk1"] = 5,
+        ["chemical-plant"] = 5,
         ["medium-electric-pole"] = 20,
         ["solar-panel"] = 5,
-        ["accumulator"] = 2
+        ["accumulator"] = 2,
+        ["stone-furnace"] = 1,
+        ["storage-tank"] = 4,
+        ["offshore-pump"] = 2
     })
     remote.call("freeplay", "set_debris_items", {
         ["iron-plate"] = 50,
