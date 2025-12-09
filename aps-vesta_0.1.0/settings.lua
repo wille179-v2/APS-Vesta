@@ -1,6 +1,6 @@
 APS.add_choice("vesta")
 
-local hideComplexMode = true -- Hides complex mode and related setting while I'm still building that part.
+local hideComplexMode = false -- Hides complex mode and related setting while I'm still building that part.
 
 data:extend({
 	{

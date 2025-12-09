@@ -27,70 +27,39 @@ data.raw["simple-entity"]["vesta-petrite"].minable.results = {
 	{type = "item", name = "calcized-copper-plate", amount_min = 1*rockMult, amount_max = 3*rockMult},
 }
 
+-- Add single very crude resource sifting recipe
 
--- Add basic smelting recipe
-data:extend{
+data:extend({
 	{
 		type = "recipe",
-		name = "smelt-iron-algae",
-		icons = {
-			{icon = vestaGraphics1 .. "icons/algea_clump_iron.png"},
-			{icon = "__base__/graphics/icons/signal/signal-fire.png", scale = .3, shift = {8,8}}
-		},
+		name = "gas-sifting",
 		enabled = false,
+		icons = {
+			{icon = vestaGraphics1 .. "icons/algea_nutrient_clump.png", scale = .25, shift = {-8,-8}},
+			{icon = vestaGraphics2 .. "icons/calcized-copper-1.png", scale = .25, shift = {8,-8}},
+			{icon = vestaGraphics2 .. "icons/calcized-iron-1.png", scale = .25, shift = {8,8}},
+			{icon = "__base__/graphics/icons/stone.png", scale = .25, shift = {-8,8}},
+		},
 		ingredients = {
-			{type = "item", name = "ske_algea_clump_iron", amount = 1}
+			{type = "fluid", name = "carbon-dioxide", amount = 100},
+			{type = "fluid", name = "nitrogen", amount = 100},
 		},
 		results = {
-			{type = "item", name = "iron-ore", amount = 1}
+			{type = "item", name = "calcized-copper-plate", amount = 1, probability = .5},
+			{type = "item", name = "calcized-iron-plate", amount = 1, probability = .5},
+			{type = "item", name = "stone", amount = 1, probability = .1},
+			{type = "item", name = "ske_algea_clump_petrite", amount = 1, probability = .05},
+			{type = "item", name = "algea_nutrient_clump", amount = 1, probability = .02},
 		},
-		category = "smelting",
-		energy_required = 1.6,
+		energy_required = 1.75,
+		category = "organic-or-chemistry",
+		subgroup = "vesta-items-organic",
 		allow_productivity = true,
-		allow_decomposition = false,
-		subgroup = "vesta-items-organic"
-	},
-	{
-		type = "recipe",
-		name = "smelt-copper-algae",
-		icons = {
-			{icon = vestaGraphics1 .. "icons/algea_clump_copper.png"},
-			{icon = "__base__/graphics/icons/signal/signal-fire.png", scale = .3, shift = {8,8}}
-		},
-		enabled = false,
-		ingredients = {
-			{type = "item", name = "ske_algea_clump_copper", amount = 1}
-		},
-		results = {
-			{type = "item", name = "copper-ore", amount = 1}
-		},
-		category = "smelting",
-		energy_required = 1.6,
-		allow_productivity = true,
-		allow_decomposition = false,
-		subgroup = "vesta-items-organic"
-	},
-	{
-		type = "recipe",
-		name = "smelt-stone-algae",
-		icons = {
-			{icon = vestaGraphics1 .. "icons/algea_clump_stonite.png"},
-			{icon = "__base__/graphics/icons/signal/signal-fire.png", scale = .3, shift = {8,8}}
-		},
-		enabled = false,
-		ingredients = {
-			{type = "item", name = "ske_algea_clump_stonite", amount = 1}
-		},
-		results = {
-			{type = "item", name = "stone", amount = 1}
-		},
-		category = "smelting",
-		energy_required = 1.6,
-		allow_productivity = true,
-		allow_decomposition = false,
-		subgroup = "vesta-items-organic"
-	},
-}
+		allow_decomposition = false
+	}
+})
+
+utils.add_recipes("s1_cluster_processing",{"gas-sifting"})
 
 -- Broaden shared recipe categories for ease of use
 data.raw["recipe"]["ske_algea_clump_iron"].category = "organic-or-chemistry"
@@ -137,7 +106,7 @@ if settings.startup["ske_vesta_legacy_recipes"].value then -- Complex Mode (the 
 	utils.remove_recipes("s1_brine",{"vesta-lithium-solidification"})
 	utils.add_recipes("lithium-processing",{"vesta-lithium-solidification"})
 
-	utils.add_recipes("s1_algea_culturing",{"ske_algea_clump_iron","ske_algea_clump_copper","smelt-iron-algae","smelt-copper-algae","smelt-stone-algae"})
+	utils.add_recipes("s1_algea_culturing",{"ske_algea_clump_iron","ske_algea_clump_copper"})
 	utils.remove_recipes("s1_algea_treatment",{"ske_algea_clump_iron","ske_algea_clump_copper"})
 
 	utils.add_recipes("s1_algea_filtering",{"iron-stick"})
@@ -174,13 +143,10 @@ else -- Simple Mode
 	-- Make nutrients available earlier
 	utils.remove_recipes("s1_dueterium",{"nutrients-from-co2"})
 	utils.add_recipes("s1_algea_discovery",{"nutrients-from-co2","nutrients-from-spoilage"})
-	utils.add_recipes("s1_algea_culturing",{"smelt-iron-algae","smelt-copper-algae","smelt-stone-algae"})
 
 	-- Move burnt spoilage earlier
 	utils.remove_recipes("cat-dreaming-of-greener-pastures",{"burnt-spoilage"})
 	utils.add_recipes("s1_algea_discovery",{"burnt-spoilage"})
-	
-	
 
 	utils.add_prerequisites("s1_gas_manipulation_science_pack",{"advanced-circuit"})
 	
