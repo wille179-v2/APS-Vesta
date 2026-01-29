@@ -252,7 +252,8 @@ if settings.startup["ske_vesta_legacy_recipes"].value then -- Complex Mode (the 
 	-- Revamp oil processing
 	data.raw["recipe"]["ske_algea_petrite_extraction"].additional_categories = {"chemistry-or-cryogenics"}
 	utils.remove_recipes("s1_algea_treatment",{"ske_algea_petrite_extraction"})
-	utils.add_recipes("oil-processing",{"ske_algea_petrite_extraction","vestan-heavy-cracking","coal-synthesis"})
+	utils.add_recipes("oil-processing",{"ske_algea_petrite_extraction","vestan-heavy-cracking"})
+	utils.add_recipes("advanced-oil-processing",{"coal-synthesis"})
 	--utils.remove_recipes("rocket-turret",{"coal-synthesis"})
 	utils.set_prerequisites("oil-processing",{"fluid-handling","s1_electrolysis"})
 
