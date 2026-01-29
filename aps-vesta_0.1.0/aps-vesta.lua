@@ -252,7 +252,8 @@ if settings.startup["ske_vesta_legacy_recipes"].value then -- Complex Mode (the 
 	-- Revamp oil processing
 	data.raw["recipe"]["ske_algea_petrite_extraction"].additional_categories = {"chemistry-or-cryogenics"}
 	utils.remove_recipes("s1_algea_treatment",{"ske_algea_petrite_extraction"})
-	utils.add_recipes("oil-processing",{"ske_algea_petrite_extraction","vestan-heavy-cracking"})
+	utils.add_recipes("oil-processing",{"ske_algea_petrite_extraction","vestan-heavy-cracking","coal-synthesis"})
+	--utils.remove_recipes("rocket-turret",{"coal-synthesis"})
 	utils.set_prerequisites("oil-processing",{"fluid-handling","s1_electrolysis"})
 
 	utils.add_recipes("bioflux",{"algae-fruit-mash","algae-jelly"}) -- Makes progression on crude gleba tree possible
@@ -274,6 +275,29 @@ if settings.startup["ske_vesta_legacy_recipes"].value then -- Complex Mode (the 
 	utils.add_recipes("cat-cold-chemistry",{"fluoroketone","fluoroketone-cooling"})
 	utils.remove_packs("cat-cold-chemistry",{"production-science-pack","space-science-pack"})
 	utils.remove_recipes("cat-cold-chemistry",{"cat-ammonia"})
+
+	-- Reward tech modifications
+	utils.remove_packs("hydrogen-sulfide",{"electromagnetic-science-pack"})
+	utils.remove_packs("carbon-dioxide",{"electromagnetic-science-pack"})
+	utils.remove_packs("s2_plateworkings",{"electromagnetic-science-pack"})
+	data.raw["technology"]["s2_transport-belt-capacity-vesta"].unit = {
+		count = 1000,
+		time = 60,
+		ingredients = {
+			{"automation-science-pack",1},
+			{"logistic-science-pack",1},
+			{"chemical-science-pack",1},
+			{"production-science-pack",1},
+			{"utility-science-pack",1},
+			{"gas-manipulation-science-pack",1},
+		}
+	}
+	utils.set_prerequisites("s2_transport-belt-capacity-vesta",{"s1_gas_manipulation_science_pack"})
+	utils.remove_packs("s2_worker-robots-storage-vesta",{"agricultural-science-pack","space-science-pack"})
+
+	utils.add_prerequisites("dt-fuel",{"fusion-reactor"})
+	utils.add_prerequisites("s2_plasma_pipes",{"fusion-reactor"})
+	
 
 
 else -- Simple Mode
