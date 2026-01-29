@@ -22,7 +22,7 @@ script.on_init(function()
         ["stone-furnace"] = 1 * bonusMult,
         ["storage-tank"] = 4 * bonusMult,
         ["offshore-pump"] = 2 * bonusMult,
-        ["efficiency-module"] = bonusItems and 2 or 0
+        --["efficiency-module"] = bonusItems and 2 or 0
     })
     remote.call("freeplay", "set_debris_items", {
         ["iron-plate"] = 50 * bonusMult,

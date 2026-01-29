@@ -16,15 +16,15 @@ data:extend({
 		name = "complex-filters-do-not-break",
 		setting_type = "startup",
 		default_value = true,
-		hidden = hideComplexMode 
+		--hidden = hideComplexMode 
 	},
 	{
 		type = "bool-setting",
 		name = "complex-mode-bonus-items",
 		setting_type = "startup",
 		default_value = false,
-		hidden = hideComplexMode
+		--hidden = hideComplexMode
 	},
 })
 
-data.raw["bool-setting"]["ske_vesta_legacy_recipes"].hidden = hideComplexMode
+--data.raw["bool-setting"]["ske_vesta_legacy_recipes"].hidden = hideComplexMode

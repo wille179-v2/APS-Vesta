@@ -8,6 +8,30 @@ local utils = require("utils")
 --X Fluid Tank and Medium Power Pole unlock with Steel processing
 --X Rework Crude Oil process... somehow?
 
+--[[
+	todo: add an alternate, vesta-only way to make bioflux.
+		algae clump + hydrogen = yumako mash
+		algae clump + nitrogen = jelly
+]]
+
+--Gasses
+
+local oxygen = "oxygen"
+local nitrogen = "nitrogen"
+local hydrogen = "hydrogen"
+local co2 = "carbon-dioxide"
+local carbonGas = "carbon-gas"
+
+if settings.startup["ske_vesta_gases"].value then
+	oxygen = "vesta_oxygen"
+	nitrogen = "vesta_nitrogen"
+	hydrogen = "vesta_hydrogen"
+	co2 = "vesta_carbon_dioxide"
+	carbonGas = "vesta_carbon"
+
+end
+
+
 local vestaGraphics1 = "__skewer_planet_vesta_assets__/graphics/"
 local vestaGraphics2 = "__skewer_planet_vesta_assets_2__/graphics/"
 
@@ -27,7 +51,7 @@ data.raw["simple-entity"]["vesta-petrite"].minable.results = {
 	{type = "item", name = "calcized-copper-plate", amount_min = 1*rockMult, amount_max = 3*rockMult},
 }
 
--- Add single very crude resource sifting recipe
+-- Add recipes to help un-break things
 
 data:extend({
 	{
@@ -41,21 +65,100 @@ data:extend({
 			{icon = "__base__/graphics/icons/stone.png", scale = .25, shift = {-8,8}},
 		},
 		ingredients = {
-			{type = "fluid", name = "carbon-dioxide", amount = 100},
-			{type = "fluid", name = "nitrogen", amount = 100},
+			{type = "fluid", name = co2, amount = 100},
+			{type = "fluid", name = nitrogen, amount = 100},
 		},
 		results = {
-			{type = "item", name = "calcized-copper-plate", amount = 1, probability = .5},
-			{type = "item", name = "calcized-iron-plate", amount = 1, probability = .5},
+			{type = "item", name = "calcized-copper-plate", amount = 1, probability = .4},
+			{type = "item", name = "calcized-iron-plate", amount = 1, probability = .6},
 			{type = "item", name = "stone", amount = 1, probability = .1},
-			{type = "item", name = "ske_algea_clump_petrite", amount = 1, probability = .05},
-			{type = "item", name = "algea_nutrient_clump", amount = 1, probability = .02},
+			{type = "item", name = "ske_algea_clump_petrite", amount = 1, probability = .04},
+			--{type = "item", name = "algea_nutrient_clump", amount = 1, probability = .01},
 		},
-		energy_required = 1.75,
+		energy_required = 2,
 		category = "organic-or-chemistry",
+		order = "c[additional_recipes]-a[gas-sifting]",
 		subgroup = "vesta-items-organic",
 		allow_productivity = true,
 		allow_decomposition = false
+	},
+	{
+		type = "recipe",
+		name = "algae-fruit-mash",
+		enabled = false,
+		icons = {
+			{icon = "__space-age__/graphics/icons/yumako-mash.png"},
+			{icon = vestaGraphics1 .. "icons/algea_clump.png", scale = .25, shift = {8,8}}
+		},
+		ingredients = {
+			{type = "item", name = "ske_algea_clump", amount = 1},
+			{type = "fluid", name = hydrogen, amount = 50}
+		},
+		results = {
+			{type = "item", name = "yumako-mash", amount = 1}
+		},
+		energy_required = 2,
+		surface_conditions = {
+			{property = "gasous_atmosphere", min = 100, max = 100}
+		},
+		category = "organic",
+		subgroup = "vesta-items-organic",
+		order = "c[additional_recipes]-b[fruit_mash]",
+		allow_productivity = true,
+		allow_decomposition = false
+	},
+	{
+		type = "recipe",
+		name = "algae-jelly",
+		enabled = false,
+		icons = {
+			{icon = "__space-age__/graphics/icons/jelly.png"},
+			{icon = vestaGraphics1 .. "icons/algea_clump.png", scale = .25, shift = {8,8}}
+		},
+		ingredients = {
+			{type = "item", name = "ske_algea_clump", amount = 1},
+			{type = "fluid", name = nitrogen, amount = 50}
+		},
+		results = {
+			{type = "item", name = "jelly", amount = 2}
+		},
+		energy_required = 2,
+		surface_conditions = {
+			{property = "gasous_atmosphere", min = 100, max = 100}
+		},
+		category = "organic",
+		subgroup = "vesta-items-organic",
+		order = "c[additional_recipes]-b[fruit_mash]",
+		allow_productivity = true,
+		allow_decomposition = false
+	},
+	{
+		type = "recipe",
+		name = "vestan-heavy-cracking",
+		enabled = false,
+		icons = {
+			{icon = vestaGraphics1 .. "icons/heavy_solution.png", scale = 0.4, shift = {0,-9}},
+			{icon = "__base__/graphics/icons/fluid/light-oil.png", scale = 0.3, shift = {-10,8}},
+			{icon = "__base__/graphics/icons/fluid/light-oil.png", scale = 0.3, shift = {10,8}},
+
+		},
+		ingredients = {
+			{type = "fluid", name = "water", amount = 30},
+			{type = "fluid", name = "ske_heavy_solution", amount = 40},
+		},
+		results = {
+			{type = "fluid", name = "light-oil", amount = 30}
+		},
+		surface_conditions = {
+			{property = "gasous_atmosphere", min = 100, max = 100}
+		},
+		energy_required = 2,
+		category = "organic-or-chemistry",
+		subgroup = "fluid-recipes",
+		order = "b[fluid-chemistry]-a[vesta-heavy-oil-cracking]",
+		allow_productivity = true,
+		allow_decomposition = false
+
 	}
 })
 
@@ -95,6 +198,9 @@ utils.set_unit("cat-dreaming-of-greener-pastures",{
 utils.remove_packs("cat-frozen-dreams",{"production-science-pack","utility-science-pack","space-science-pack"})
 utils.set_prerequisites("cat-frozen-dreams",{"cat-energize-innovation"})
 
+-- Oil processing triggers on methane harvest
+utils.set_trigger("oil-processing",{type = "craft-fluid",fluid="methane"})
+
 -- Alter tech tree
 if settings.startup["ske_vesta_legacy_recipes"].value then -- Complex Mode (the Default)
 	
@@ -110,6 +216,8 @@ if settings.startup["ske_vesta_legacy_recipes"].value then -- Complex Mode (the 
 	utils.remove_recipes("s1_algea_treatment",{"ske_algea_clump_iron","ske_algea_clump_copper"})
 
 	utils.add_recipes("s1_algea_filtering",{"iron-stick"})
+
+	
 
 	-- Makes it possible to hand-craft sand.
 	local sandRecipe = data.raw["recipe"]["sand"]
@@ -132,6 +240,40 @@ if settings.startup["ske_vesta_legacy_recipes"].value then -- Complex Mode (the 
 		filterTreatment.results[3].probability = 1
 	end
 
+	
+	utils.add_recipes("s1_nutrients_from_co2",{"nutrients-from-spoilage"})
+
+	utils.add_prerequisites("s1_algea_treatment",{"s1_algea_filtering"})
+	utils.add_prerequisites("s1_brine",{"s1_algea_filtering","oil-processing"})
+
+	utils.add_prerequisites("s1_sandceramicmesh",{"automation-2"}) -- Ceramic requires automation 2
+	data.raw["technology"]["s1_sandceramicmesh"].essential = true
+
+	-- Revamp oil processing
+	data.raw["recipe"]["ske_algea_petrite_extraction"].additional_categories = {"chemistry-or-cryogenics"}
+	utils.remove_recipes("s1_algea_treatment",{"ske_algea_petrite_extraction"})
+	utils.add_recipes("oil-processing",{"ske_algea_petrite_extraction","vestan-heavy-cracking"})
+	utils.set_prerequisites("oil-processing",{"fluid-handling","s1_electrolysis"})
+
+	utils.add_recipes("bioflux",{"algae-fruit-mash","algae-jelly"}) -- Makes progression on crude gleba tree possible
+
+	utils.add_prerequisites("s1_algea_treatment",{"heating-tower","fluid-handling"})
+	utils.set_prerequisites("cat-energize-innovation",{"cat-bolt-of-inspiration","s1_exotic_algae"})
+	utils.set_prerequisites("planet-discovery-fulgora",{"cat-bolt-of-inspiration","cat-salvage-failed-efforts","space-platform-thruster"})
+	
+	utils.set_trigger("holmium-processing",{type = "craft-fluid", fluid = "holmium-solution"})
+
+	utils.remove_recipes("s2_fusion_robots",{"ske_heavy_solution_lubricant"})
+	utils.add_recipes("lubricant",{"ske_heavy_solution_lubricant"})
+	utils.add_prerequisites("lubricant",{"holmium-processing","s1_exotic_algae"})
+
+	utils.remove_recipes("s1_supermagnet",{"ske-rocket-fuel-from-vesta"})
+	utils.add_recipes("rocket-fuel",{"ske-rocket-fuel-from-vesta"})
+
+	utils.remove_recipes("cryogenic-plant",{"fluoroketone","fluoroketone-cooling"})
+	utils.add_recipes("cat-cold-chemistry",{"fluoroketone","fluoroketone-cooling"})
+	utils.remove_packs("cat-cold-chemistry",{"production-science-pack","space-science-pack"})
+	utils.remove_recipes("cat-cold-chemistry",{"cat-ammonia"})
 
 
 else -- Simple Mode
@@ -152,7 +294,6 @@ else -- Simple Mode
 	
 
 	-- Reworks basic oil tech to work on Vesta
-	utils.set_trigger("oil-processing",{type = "craft-fluid",fluid="methane"})
 	utils.remove_recipes("s1_algea_extracting",{"ske_methane_petro"})
 	utils.add_recipes("oil-processing",{"ske_methane_petro"})
 	utils.set_prerequisites("oil-processing",{"fluid-handling"})
